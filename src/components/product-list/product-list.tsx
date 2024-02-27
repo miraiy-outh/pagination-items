@@ -9,6 +9,7 @@ export function ProductList() {
             flexDirection='row'
             justifyContent='space-between'
             gap={2}
+            sx={{ margin: '16px' }}
             className='product-list'
         >
             <Products></Products>
