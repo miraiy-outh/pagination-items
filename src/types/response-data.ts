@@ -4,13 +4,12 @@ export type TResponseIds = {
     result: string[]
 }
 
-type TFields = string | null
 
 export type TResponseItems = {
     result: TProduct[]
 }
 
-export type TResponseFields = {
-    result: TFields[]
+export type TResponseFields<T> = {
+    result: T[]
 }
 

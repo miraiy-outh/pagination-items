@@ -1,14 +1,15 @@
 import { Box, Slider, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "../../../../hooks/redux-hooks";
-import { productsPriceFilterSelector } from "../../../../services/selectors/products-selectors";
-import { PRODUCTS_PRICE_CHANGE } from "../../../../services/constants/products-constants";
+import { productsPriceFilterSelector, productsPriceSelector } from "../../../../services/selectors/products-selectors";
+import { PRODUCTS_PRICE_FILTER_CHANGE } from "../../../../services/constants/products-constants";
 
 export function PriceFilter() {
     const price = useSelector(productsPriceFilterSelector)
+    const maxPrice = useSelector(productsPriceSelector)
     const dispatch = useDispatch()
     const handleChange = (newPrice: number) => {
         dispatch({
-            type: PRODUCTS_PRICE_CHANGE,
+            type: PRODUCTS_PRICE_FILTER_CHANGE,
             price: newPrice
         })
     };
@@ -35,8 +36,8 @@ export function PriceFilter() {
                 value={price}
                 onChange={handleSliderChange}
                 min={0}
-                max={100}
-                step={1}
+                max={maxPrice}
+                step={100}
                 valueLabelDisplay="auto"
                 aria-labelledby="range-slider"
             />

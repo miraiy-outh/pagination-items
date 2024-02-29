@@ -74,7 +74,7 @@ export async function getPriceFilteredProductsIds(price: number, offset: number)
     return responseData;
 }
 
-export async function getFields(field: TField, offset: number): Promise<TResponseFields> {
+export async function getFields<T>(field: TField, offset: number): Promise<TResponseFields<T>> {
     const data: TRequestData = {
         action: "get_fields",
         params: {
@@ -91,14 +91,14 @@ export async function getFields(field: TField, offset: number): Promise<TRespons
         throw new Error('Network response was not ok');
     }
 
-    const responseData: TResponseFields = await response.json();
+    const responseData: TResponseFields<T> = await response.json();
 
     return responseData;
 }
 
 export async function getProducts(ids: string[], offset: number): Promise<TResponseItems> {
     const data: TRequestData = {
-        action: "get_fields",
+        action: "get_items",
         params: {
             ids: ids,
             offset: offset,

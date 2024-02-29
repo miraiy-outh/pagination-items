@@ -1,5 +1,4 @@
-import { countPages } from "../../utils/calculate-utils"
-import { PRODUCTS_BRAND_CHANGE, PRODUCTS_INIT, PRODUCTS_NAME_CHANGE, PRODUCTS_PAGE_CHANGE, PRODUCTS_PRICE_CHANGE } from "../constants/products-constants"
+import { PRODUCTS_BRAND_CHANGE, PRODUCTS_BRAND_FILTER_CHANGE, PRODUCTS_INIT, PRODUCTS_NAME_CHANGE, PRODUCTS_PAGE_CHANGE, PRODUCTS_PRICE_CHANGE, PRODUCTS_PRICE_FILTER_CHANGE } from "../constants/products-constants"
 
 export type TProduct = {
     id: string,
@@ -11,8 +10,6 @@ export type TProduct = {
 type TProductsState = {
     products: TProduct[],
     pageNumber: number,
-    pageCount: number,
-    minPrice: number,
     maxPrice: number,
     brands: string[],
     priceFilter: number,
@@ -22,7 +19,18 @@ type TProductsState = {
 
 type TProductsInitAction = {
     type: typeof PRODUCTS_INIT,
-    products: TProduct[]
+    products: TProduct[],
+}
+
+
+type TProductsPriceFilterChangeAction = {
+    type: typeof PRODUCTS_PRICE_FILTER_CHANGE,
+    price: number
+}
+
+type TProductsBrandFilterChangeAction = {
+    type: typeof PRODUCTS_BRAND_FILTER_CHANGE,
+    brand: string[]
 }
 
 type TProductsPriceChangeAction = {
@@ -45,13 +53,11 @@ type TProductsPageChangeAction = {
     page: number
 }
 
-type TProductsActions = TProductsInitAction | TProductsPriceChangeAction | TProductsBrandChangeAction | TProductsNameChangeAction | TProductsPageChangeAction
+type TProductsActions = TProductsInitAction | TProductsPriceChangeAction | TProductsBrandChangeAction | TProductsPriceFilterChangeAction | TProductsBrandFilterChangeAction | TProductsNameChangeAction | TProductsPageChangeAction
 
 const defaultState: TProductsState = {
     products: [],
     pageNumber: 1,
-    pageCount: 1,
-    minPrice: 0,
     maxPrice: 0,
     brands: [],
     priceFilter: 0,
@@ -62,19 +68,19 @@ const defaultState: TProductsState = {
 export function productsReducer(state = defaultState, action: TProductsActions): TProductsState {
     switch (action.type) {
         case PRODUCTS_INIT: {
-            const pageCount = countPages(action.products.length)
             return {
-                ...state, products: action.products, pageCount
+                ...state,
+                products: action.products,
             }
         }
 
-        case PRODUCTS_PRICE_CHANGE: {
+        case PRODUCTS_PRICE_FILTER_CHANGE: {
             return {
                 ...state, priceFilter: action.price
             }
         }
 
-        case PRODUCTS_BRAND_CHANGE: {
+        case PRODUCTS_BRAND_FILTER_CHANGE: {
             return {
                 ...state, brandFilter: action.brand
             }
@@ -83,6 +89,18 @@ export function productsReducer(state = defaultState, action: TProductsActions):
         case PRODUCTS_NAME_CHANGE: {
             return {
                 ...state, nameFilter: action.name
+            }
+        }
+
+        case PRODUCTS_PRICE_CHANGE: {
+            return {
+                ...state, maxPrice: action.price
+            }
+        }
+
+        case PRODUCTS_BRAND_CHANGE: {
+            return {
+                ...state, brands: action.brand
             }
         }
 

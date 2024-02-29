@@ -1,41 +1,51 @@
-import { Card, CardContent, Typography } from '@mui/material'
+import { Box, Card, CardContent, Typography } from '@mui/material'
+import { TProduct } from '../../../../services/reducers/products-reducer'
 
-export function Product() {
+export function Product(props: TProduct) {
+    const { id, brand, product, price } = props;
+
     return (
         <Card
             variant='outlined'
             className='product'
             sx={{
                 width: 360,
-                height: 160
+                height: 200
             }}
         >
-            <CardContent>
+            <CardContent
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                }}
+            >
                 <Typography
                     variant="h6"
                     color='text.primary'
                 >
-                    Золотое кольцо с бриллиантом
+                    {product}
                 </Typography>
+
                 <Typography
                     variant="caption"
                     color='text.primary'
                 >
-                    1789ecf3-f81c-4f49-ada2-83804dcc74b0
+                    {id}
                 </Typography>
                 <Typography
                     variant="body1"
                     color='text.primary'
                     fontWeight='bold'
                 >
-                    brand
+                    {brand}
                 </Typography>
                 <Typography
                     variant="h5"
                     color='primary'
                     fontWeight='bold'
                 >
-                    16700.0
+                    {price}
                 </Typography>
             </CardContent>
         </Card>

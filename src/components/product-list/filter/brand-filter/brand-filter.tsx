@@ -1,7 +1,7 @@
 import { Select, MenuItem, FormControl, Box, Typography, SelectChangeEvent } from '@mui/material';
 import { useDispatch, useSelector } from '../../../../hooks/redux-hooks';
 import { productsBrandFilterSelector, productsBrandsSelector } from '../../../../services/selectors/products-selectors';
-import { PRODUCTS_BRAND_CHANGE } from '../../../../services/constants/products-constants';
+import { PRODUCTS_BRAND_FILTER_CHANGE } from '../../../../services/constants/products-constants';
 
 export function BrandFilter() {
     const brands = useSelector(productsBrandsSelector)
@@ -12,7 +12,7 @@ export function BrandFilter() {
         const currentBrands = event.target.value
         if (Array.isArray(currentBrands)) {
             dispatch({
-                type: PRODUCTS_BRAND_CHANGE,
+                type: PRODUCTS_BRAND_FILTER_CHANGE,
                 brand: currentBrands
             })
         }
