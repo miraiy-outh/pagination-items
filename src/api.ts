@@ -2,6 +2,8 @@ import md5 from "md5";
 import { TField, TRequestData } from "./types/request-data";
 import { TResponseFields, TResponseIds, TResponseItems } from "./types/response-data";
 
+export const limit = 50;
+
 const password = import.meta.env.VITE_PASSWORD;
 let date = new Date();
 const year = date.getFullYear();
@@ -34,7 +36,7 @@ export async function getProductsIds(offset: number): Promise<TResponseIds> {
         action: "get_ids",
         params: {
             offset: offset,
-            limit: 50
+            limit: limit
         }
     };
 
@@ -56,7 +58,7 @@ export async function getPriceFilteredProductsIds(price: number, offset: number)
         params: {
             price: price,
             offset: offset,
-            limit: 50
+            limit: limit
         }
     };
 
@@ -78,7 +80,7 @@ export async function getFields(field: TField, offset: number): Promise<TRespons
         params: {
             field: field,
             offset: offset,
-            limit: 50
+            limit: limit
         }
     };
 
@@ -100,7 +102,7 @@ export async function getProducts(ids: string[], offset: number): Promise<TRespo
         params: {
             ids: ids,
             offset: offset,
-            limit: 50
+            limit: limit
         }
     };
 

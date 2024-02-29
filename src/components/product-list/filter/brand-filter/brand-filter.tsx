@@ -1,11 +1,21 @@
-import { useState } from 'react';
 import { Select, MenuItem, FormControl, Box, Typography, SelectChangeEvent } from '@mui/material';
+import { useDispatch, useSelector } from '../../../../hooks/redux-hooks';
+import { productsBrandFilterSelector, productsBrandsSelector } from '../../../../services/selectors/products-selectors';
+import { PRODUCTS_BRAND_CHANGE } from '../../../../services/constants/products-constants';
 
 export function BrandFilter() {
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const brands = useSelector(productsBrandsSelector)
+    const brandsFilter = useSelector(productsBrandFilterSelector)
+    const dispatch = useDispatch()
 
-    const handleChange = (event: SelectChangeEvent<typeof selectedOptions>) => {
-        setSelectedOptions(typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value);
+    const handleChange = (event: SelectChangeEvent<typeof brandsFilter>) => {
+        const currentBrands = event.target.value
+        if (Array.isArray(currentBrands)) {
+            dispatch({
+                type: PRODUCTS_BRAND_CHANGE,
+                brand: currentBrands
+            })
+        }
     };
 
     return (
@@ -23,15 +33,14 @@ export function BrandFilter() {
                     labelId="multiple-select-label"
                     id="multiple-select"
                     multiple
-                    value={selectedOptions}
+                    value={brandsFilter}
                     onChange={handleChange}
                 >
-                    <MenuItem value="option1">Опция 1</MenuItem>
-                    <MenuItem value="option2">Опция 2</MenuItem>
-                    <MenuItem value="option3">Опция 3</MenuItem>
-                    <MenuItem value="option4">Опция 1</MenuItem>
-                    <MenuItem value="option5">Опция 2</MenuItem>
-                    <MenuItem value="option6">Опция 3</MenuItem>
+                    {brands.map((brand) => {
+                        return (
+                            <MenuItem value={`${brand}`}>{brand}</MenuItem>
+                        )
+                    })}
                 </Select>
             </FormControl>
         </Box>

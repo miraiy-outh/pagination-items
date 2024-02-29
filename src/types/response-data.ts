@@ -1,3 +1,5 @@
+import { TProduct } from "../services/reducers/products-reducer"
+
 export type TResponseIds = {
     result: string[]
 }
@@ -5,12 +7,7 @@ export type TResponseIds = {
 type TFields = string | null
 
 export type TResponseItems = {
-    result: {
-        brand: TFields,
-        id: string,
-        price: number,
-        product: string
-    }
+    result: TProduct[]
 }
 
 export type TResponseFields = {

@@ -1,29 +1,25 @@
 import { Box, Slider, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useDispatch, useSelector } from "../../../../hooks/redux-hooks";
+import { productsPriceFilterSelector } from "../../../../services/selectors/products-selectors";
+import { PRODUCTS_PRICE_CHANGE } from "../../../../services/constants/products-constants";
 
 export function PriceFilter() {
-    const [value, setValue] = useState<number[]>([0, 100]);
-
-    const handleChange = (event: Event, newValue: number | number[]) => {
-        if (Array.isArray(newValue)) {
-            setValue(newValue);
-        }
-    };
-
-    const handleMinPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((prev) => {
-            const maxValue = prev[1]
-            return [parseInt(event.target.value), maxValue]
+    const price = useSelector(productsPriceFilterSelector)
+    const dispatch = useDispatch()
+    const handleChange = (newPrice: number) => {
+        dispatch({
+            type: PRODUCTS_PRICE_CHANGE,
+            price: newPrice
         })
     };
-
-    const handleMaxPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((prev) => {
-            const minValue = prev[0]
-            return [minValue, parseInt(event.target.value)]
-        })
+    const handleSliderChange = (event: Event, newValue: number | number[]) => {
+        if (!Array.isArray(newValue)) handleChange(newValue)
     };
 
+    const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newPrice = parseInt(event.target.value);
+        handleChange(newPrice)
+    };
     return (
         <Box
             display='flex'
@@ -35,33 +31,21 @@ export function PriceFilter() {
                 Цена
             </Typography>
             <Slider
-                value={value}
-                onChange={handleChange}
+                style={{ width: 250, marginLeft: 10 }}
+                value={price}
+                onChange={handleSliderChange}
                 min={0}
                 max={100}
                 step={1}
                 valueLabelDisplay="auto"
                 aria-labelledby="range-slider"
             />
-            <Box
-                display='flex'
-                flexDirection='row'
-                justifyContent='space-between'
-            >
-                <TextField
-                    type="number"
-                    value={value[0]}
-                    onChange={handleMinPriceChange}
-                    sx={{ width: '100px' }}
-                />
-                <TextField
-                    type="number"
-                    value={value[1]}
-                    onChange={handleMaxPriceChange}
-                    sx={{ width: '100px' }}
-                />
-            </Box>
-
+            <TextField
+                type="number"
+                value={price}
+                onChange={handleTextFieldChange}
+                sx={{ width: '100px' }}
+            />
         </Box>
     );
 }

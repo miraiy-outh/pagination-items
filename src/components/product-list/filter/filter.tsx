@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Typography } from '@mui/material'
 import { PriceFilter } from './price-filter/price-filter'
 import { BrandFilter } from './brand-filter/brand-filter'
 import { NameFilter } from './name-filer/name-filter'
@@ -14,9 +14,7 @@ export function Filter() {
                     marginBottom={3}
                     variant="h5"
                     color='text.primary'
-                >
-                    Фильтр
-                </Typography>
+                >Фильтр</Typography>
                 <Box
                     display='flex'
                     flexDirection='column'
@@ -27,6 +25,11 @@ export function Filter() {
                     <NameFilter></NameFilter>
                 </Box>
 
+                <Button
+                    style={{ marginTop: '48px' }}
+                    variant='contained'
+                    size='large'
+                >Применить</Button>
             </CardContent>
         </Card>
     )
