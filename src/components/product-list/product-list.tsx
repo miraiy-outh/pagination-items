@@ -65,7 +65,6 @@ export function ProductList() {
                     const uniqueProducts = products.filter((product, index, array) => {
                         return !array.slice(0, index).some(prevProduct => prevProduct.id === product.id);
                     });
-                    console.log(uniqueProducts)
                     dispatch({
                         type: PRODUCTS_INIT,
                         products: uniqueProducts,
@@ -116,12 +115,14 @@ export function ProductList() {
                     gap={6}
                 >
                     <Products></Products>
-                    <Pagination
-                        count={pageNumber + 1}
-                        page={pageNumber}
-                        size="large"
-                        onChange={handlePageChange}
-                    />
+                    {isFiltered ? <></> :
+                        <Pagination
+                            count={pageNumber + 1}
+                            page={pageNumber}
+                            size="large"
+                            onChange={handlePageChange}
+                        />
+                    }
 
                 </Box>
             }
