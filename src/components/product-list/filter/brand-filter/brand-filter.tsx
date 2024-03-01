@@ -22,7 +22,8 @@ export function BrandFilter() {
         <Box
             display='flex'
             flexDirection='column'
-            gap={1}
+            alignItems='flex-start'
+            gap={2}
             className='brand-filter'
         >
             <Typography variant="h6">

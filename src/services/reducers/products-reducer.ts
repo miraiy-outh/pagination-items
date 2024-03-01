@@ -1,4 +1,4 @@
-import { PRODUCTS_BRAND_CHANGE, PRODUCTS_BRAND_FILTER_CHANGE, PRODUCTS_INIT, PRODUCTS_NAME_CHANGE, PRODUCTS_PAGE_CHANGE, PRODUCTS_PRICE_CHANGE, PRODUCTS_PRICE_FILTER_CHANGE } from "../constants/products-constants"
+import { PRODUCTS_BRAND_CHANGE, PRODUCTS_BRAND_FILTER_CHANGE, PRODUCTS_FILTERING_CHANGE, PRODUCTS_INIT, PRODUCTS_LOADING_CHANGE, PRODUCTS_NAME_CHANGE, PRODUCTS_PAGE_CHANGE, PRODUCTS_PRICE_CHANGE, PRODUCTS_PRICE_FILTER_CHANGE } from "../constants/products-constants"
 
 export type TProduct = {
     id: string,
@@ -7,14 +7,20 @@ export type TProduct = {
     price: number
 }
 
+type TFilter = {
+    priceFilter: number,
+    brandFilter: string[],
+    nameFilter: string
+}
+
 type TProductsState = {
     products: TProduct[],
     pageNumber: number,
     maxPrice: number,
     brands: string[],
-    priceFilter: number,
-    brandFilter: string[],
-    nameFilter: string
+    filter: TFilter
+    isLoading: boolean
+    isFiltered: boolean
 }
 
 type TProductsInitAction = {
@@ -53,16 +59,30 @@ type TProductsPageChangeAction = {
     page: number
 }
 
-type TProductsActions = TProductsInitAction | TProductsPriceChangeAction | TProductsBrandChangeAction | TProductsPriceFilterChangeAction | TProductsBrandFilterChangeAction | TProductsNameChangeAction | TProductsPageChangeAction
+type TProductsLoadingChangeAction = {
+    type: typeof PRODUCTS_LOADING_CHANGE,
+    isLoading: boolean
+}
+
+type TProductsFilteringChangeAction = {
+    type: typeof PRODUCTS_FILTERING_CHANGE,
+    isFiltered: boolean
+}
+
+type TProductsActions = TProductsInitAction | TProductsPriceChangeAction | TProductsBrandChangeAction | TProductsPriceFilterChangeAction | TProductsBrandFilterChangeAction | TProductsNameChangeAction | TProductsPageChangeAction | TProductsLoadingChangeAction | TProductsFilteringChangeAction
 
 const defaultState: TProductsState = {
     products: [],
     pageNumber: 1,
     maxPrice: 0,
     brands: [],
-    priceFilter: 0,
-    brandFilter: [],
-    nameFilter: ''
+    filter: {
+        priceFilter: 0,
+        brandFilter: [],
+        nameFilter: ''
+    },
+    isLoading: true,
+    isFiltered: false
 }
 
 export function productsReducer(state = defaultState, action: TProductsActions): TProductsState {
@@ -71,24 +91,37 @@ export function productsReducer(state = defaultState, action: TProductsActions):
             return {
                 ...state,
                 products: action.products,
+                isLoading: false
             }
         }
 
         case PRODUCTS_PRICE_FILTER_CHANGE: {
             return {
-                ...state, priceFilter: action.price
+                ...state,
+                filter: {
+                    ...state.filter,
+                    priceFilter: action.price
+                }
             }
         }
 
         case PRODUCTS_BRAND_FILTER_CHANGE: {
             return {
-                ...state, brandFilter: action.brand
+                ...state,
+                filter: {
+                    ...state.filter,
+                    brandFilter: action.brand
+                }
             }
         }
 
         case PRODUCTS_NAME_CHANGE: {
             return {
-                ...state, nameFilter: action.name
+                ...state,
+                filter: {
+                    ...state.filter,
+                    nameFilter: action.name
+                }
             }
         }
 
@@ -107,6 +140,18 @@ export function productsReducer(state = defaultState, action: TProductsActions):
         case PRODUCTS_PAGE_CHANGE: {
             return {
                 ...state, pageNumber: action.page
+            }
+        }
+
+        case PRODUCTS_LOADING_CHANGE: {
+            return {
+                ...state, isLoading: action.isLoading
+            }
+        }
+
+        case PRODUCTS_FILTERING_CHANGE: {
+            return {
+                ...state, isLoading: action.isFiltered
             }
         }
 

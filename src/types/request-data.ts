@@ -5,6 +5,8 @@ export type TRequestData = {
     action: TAction,
     params: {
         offset?: number,
+        brand?: string,
+        product?: string,
         limit?: number,
         price?: number,
         field?: TField

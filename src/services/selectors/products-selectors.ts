@@ -5,11 +5,11 @@ export function productsSelector(state: RootState) {
 }
 
 export function productsPriceFilterSelector(state: RootState) {
-    return state.productsData.priceFilter
+    return state.productsData.filter.priceFilter
 }
 
 export function productsBrandFilterSelector(state: RootState) {
-    return state.productsData.brandFilter
+    return state.productsData.filter.brandFilter
 }
 
 export function productsPriceSelector(state: RootState) {
@@ -22,7 +22,11 @@ export function productsBrandSelector(state: RootState) {
 
 
 export function productsNameFilterSelector(state: RootState) {
-    return state.productsData.nameFilter
+    return state.productsData.filter.nameFilter
+}
+
+export function productsFiltersSelector(state: RootState) {
+    return state.productsData.filter
 }
 
 export function productsPageNumberSelector(state: RootState) {
@@ -35,4 +39,12 @@ export function productsMaxPriceSelector(state: RootState) {
 
 export function productsBrandsSelector(state: RootState) {
     return state.productsData.brands
+}
+
+export function productsIsLoadingSelector(state: RootState) {
+    return state.productsData.isLoading
+}
+
+export function productsIsFilteredSelector(state: RootState) {
+    return state.productsData.isFiltered
 }

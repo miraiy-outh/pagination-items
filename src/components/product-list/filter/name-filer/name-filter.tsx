@@ -19,7 +19,8 @@ export function NameFilter() {
         <Box
             display='flex'
             flexDirection='column'
-            gap={1}
+            alignItems='flex-start'
+            gap={2}
             className='name-filter'
         >
             <Typography variant="h6">

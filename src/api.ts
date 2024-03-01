@@ -35,7 +35,7 @@ export async function getProductsIds(offset: number): Promise<TResponseIds> {
     const data: TRequestData = {
         action: "get_ids",
         params: {
-            offset: offset,
+            offset: (offset - 1) * limit,
             limit: limit
         }
     };
@@ -52,13 +52,11 @@ export async function getProductsIds(offset: number): Promise<TResponseIds> {
     return responseData;
 }
 
-export async function getPriceFilteredProductsIds(price: number, offset: number): Promise<TResponseIds> {
+export async function getPriceFilteredProductsIds(price: number): Promise<TResponseIds> {
     const data: TRequestData = {
         action: "filter",
         params: {
-            price: price,
-            offset: offset,
-            limit: limit
+            price: price
         }
     };
 
@@ -74,13 +72,51 @@ export async function getPriceFilteredProductsIds(price: number, offset: number)
     return responseData;
 }
 
-export async function getFields<T>(field: TField, offset: number): Promise<TResponseFields<T>> {
+export async function getBrandFilteredProductsIds(brand: string): Promise<TResponseIds> {
+    const data: TRequestData = {
+        action: "filter",
+        params: {
+            brand
+        }
+    };
+
+    const requestOptions = getReguestOptions(data);
+
+    const response = await fetch(url, requestOptions)
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const responseData: TResponseIds = await response.json();
+
+    return responseData;
+}
+
+export async function getNameFilteredProductsIds(product: string): Promise<TResponseIds> {
+    const data: TRequestData = {
+        action: "filter",
+        params: {
+            product,
+        }
+    };
+
+    const requestOptions = getReguestOptions(data);
+
+    const response = await fetch(url, requestOptions)
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const responseData: TResponseIds = await response.json();
+
+    return responseData;
+}
+
+export async function getFields<T>(field: TField): Promise<TResponseFields<T>> {
     const data: TRequestData = {
         action: "get_fields",
         params: {
-            field: field,
-            offset: offset,
-            limit: limit
+            field: field
         }
     };
 
@@ -96,13 +132,11 @@ export async function getFields<T>(field: TField, offset: number): Promise<TResp
     return responseData;
 }
 
-export async function getProducts(ids: string[], offset: number): Promise<TResponseItems> {
+export async function getProducts(ids: string[]): Promise<TResponseItems> {
     const data: TRequestData = {
         action: "get_items",
         params: {
-            ids: ids,
-            offset: offset,
-            limit: limit
+            ids: ids
         }
     };
 
