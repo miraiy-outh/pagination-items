@@ -4,15 +4,20 @@ import { Products } from './products/products'
 import { useDispatch, useSelector } from '../../hooks/redux-hooks'
 import { PRODUCTS_BRAND_CHANGE, PRODUCTS_INIT, PRODUCTS_LOADING_CHANGE, PRODUCTS_PAGE_CHANGE, PRODUCTS_PRICE_CHANGE } from '../../services/constants/products-constants'
 import { ChangeEvent, useEffect } from 'react'
-import { getFields, getProductsIds, getProducts } from '../../api'
+import { getFields, getProductsIds, getProducts, getPriceFilteredProductsIds, getNameFilteredProductsIds, getBrandFilteredProductsIds } from '../../api'
 import { findMax } from '../../utils/calculate-utils'
-import { productsIsFilteredSelector, productsIsLoadingSelector, productsPageNumberSelector } from '../../services/selectors/products-selectors'
+import { productsBrandFilterSelector, productsFilterNameSelector, productsIsFilteredSelector, productsIsLoadingSelector, productsNameFilterSelector, productsPageNumberSelector, productsPriceFilterSelector } from '../../services/selectors/products-selectors'
 
 export function ProductList() {
     const dispatch = useDispatch()
     const pageNumber = useSelector(productsPageNumberSelector)
     const isLoading = useSelector(productsIsLoadingSelector)
     const isFiltered = useSelector(productsIsFilteredSelector)
+    const filterName = useSelector(productsFilterNameSelector)
+    const priceFilter = useSelector(productsPriceFilterSelector)
+    const brandFilter = useSelector(productsBrandFilterSelector)
+    const nameFilter = useSelector(productsNameFilterSelector)
+
     const handlePageChange = (event: ChangeEvent<unknown>, newPage: number) => {
         dispatch({
             type: PRODUCTS_PAGE_CHANGE,
@@ -27,6 +32,39 @@ export function ProductList() {
             behavior: 'smooth'
         });
     };
+
+    const getProductsData = (ids: string[]) => {
+        getProducts(ids).then((data) => {
+            const products = data.result
+            const uniqueProducts = products.filter((product, index, array) => {
+                return !array.slice(0, index).some(prevProduct => prevProduct.id === product.id);
+            });
+            dispatch({
+                type: PRODUCTS_INIT,
+                products: uniqueProducts,
+            })
+            dispatch({
+                type: PRODUCTS_LOADING_CHANGE,
+                isLoading: false
+            })
+        })
+            .catch(() => {
+                getProducts(ids).then((data) => {
+                    const products = data.result
+                    const uniqueProducts = products.filter((product, index, array) => {
+                        return !array.slice(0, index).some(prevProduct => prevProduct.id === product.id);
+                    });
+                    dispatch({
+                        type: PRODUCTS_INIT,
+                        products: uniqueProducts,
+                    })
+                    dispatch({
+                        type: PRODUCTS_LOADING_CHANGE,
+                        isLoading: false
+                    })
+                })
+            })
+    }
 
     useEffect(() => {
         getFields<number>('price').then((data) => {
@@ -53,48 +91,51 @@ export function ProductList() {
     }, [])
 
     useEffect(() => {
-        if (!isFiltered) {
+        if (isFiltered) {
+            dispatch({
+                type: PRODUCTS_LOADING_CHANGE,
+                isLoading: true
+            })
+            switch (filterName) {
+                case 'price': {
+                    getPriceFilteredProductsIds(priceFilter).then((data) => {
+                        const ids = data.result
+                        getProductsData(ids)
+                    })
+                    break;
+                }
+
+                case 'brand': {
+                    getBrandFilteredProductsIds(brandFilter).then((data) => {
+                        const ids = data.result
+                        getProductsData(ids)
+                    })
+                    break;
+                }
+
+                case 'name': {
+                    getNameFilteredProductsIds(nameFilter).then((data) => {
+                        const ids = data.result
+                        getProductsData(ids)
+                    })
+                    break;
+                }
+
+                default: break;
+            }
+        }
+        else {
             dispatch({
                 type: PRODUCTS_LOADING_CHANGE,
                 isLoading: true
             })
             getProductsIds(pageNumber).then((data) => {
-                const productsIds = data.result
-                getProducts(productsIds).then((data) => {
-                    const products = data.result
-                    const uniqueProducts = products.filter((product, index, array) => {
-                        return !array.slice(0, index).some(prevProduct => prevProduct.id === product.id);
-                    });
-                    dispatch({
-                        type: PRODUCTS_INIT,
-                        products: uniqueProducts,
-                    })
-                    dispatch({
-                        type: PRODUCTS_LOADING_CHANGE,
-                        isLoading: false
-                    })
-                })
-                    .catch(() => {
-                        const productsIds = data.result
-                        getProducts(productsIds).then((data) => {
-                            const products = data.result
-                            const uniqueProducts = products.filter((product, index, array) => {
-                                return !array.slice(0, index).some(prevProduct => prevProduct.id === product.id);
-                            });
-                            dispatch({
-                                type: PRODUCTS_INIT,
-                                products: uniqueProducts,
-                            })
-                            dispatch({
-                                type: PRODUCTS_LOADING_CHANGE,
-                                isLoading: false
-                            })
-                        })
-                    })
+                const ids = data.result
+                getProductsData(ids)
             })
         }
 
-    }, [pageNumber])
+    }, [pageNumber, isFiltered])
 
     return (
         <Box

@@ -5,12 +5,12 @@ import { PRODUCTS_BRAND_FILTER_CHANGE } from '../../../../services/constants/pro
 
 export function BrandFilter() {
     const brands = useSelector(productsBrandsSelector)
-    const brandsFilter = useSelector(productsBrandFilterSelector)
+    const brandFilter = useSelector(productsBrandFilterSelector)
     const dispatch = useDispatch()
 
-    const handleChange = (event: SelectChangeEvent<typeof brandsFilter>) => {
+    const handleChange = (event: SelectChangeEvent<typeof brandFilter>) => {
         const currentBrands = event.target.value
-        if (Array.isArray(currentBrands)) {
+        if (!Array.isArray(currentBrands)) {
             dispatch({
                 type: PRODUCTS_BRAND_FILTER_CHANGE,
                 brand: currentBrands
@@ -31,10 +31,9 @@ export function BrandFilter() {
             </Typography>
             <FormControl sx={{ width: 240 }}>
                 <Select
-                    labelId="multiple-select-label"
-                    id="multiple-select"
-                    multiple
-                    value={brandsFilter}
+                    labelId="single-select-label"
+                    id="single-select"
+                    value={brandFilter}
                     onChange={handleChange}
                 >
                     {brands.map((brand) => {

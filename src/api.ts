@@ -44,7 +44,7 @@ export async function getProductsIds(offset: number): Promise<TResponseIds> {
 
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        console.log('Network response was not ok');
     }
 
     const responseData: TResponseIds = await response.json();
@@ -64,7 +64,7 @@ export async function getPriceFilteredProductsIds(price: number): Promise<TRespo
 
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        console.log('Network response was not ok');
     }
 
     const responseData: TResponseIds = await response.json();
@@ -76,7 +76,7 @@ export async function getBrandFilteredProductsIds(brand: string): Promise<TRespo
     const data: TRequestData = {
         action: "filter",
         params: {
-            brand
+            brand: brand
         }
     };
 
@@ -84,7 +84,7 @@ export async function getBrandFilteredProductsIds(brand: string): Promise<TRespo
 
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        console.log('Network response was not ok');
     }
 
     const responseData: TResponseIds = await response.json();
@@ -96,7 +96,7 @@ export async function getNameFilteredProductsIds(product: string): Promise<TResp
     const data: TRequestData = {
         action: "filter",
         params: {
-            product,
+            product: product,
         }
     };
 
@@ -104,7 +104,7 @@ export async function getNameFilteredProductsIds(product: string): Promise<TResp
 
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        console.log('Network response was not ok');
     }
 
     const responseData: TResponseIds = await response.json();
@@ -124,7 +124,7 @@ export async function getFields<T>(field: TField): Promise<TResponseFields<T>> {
 
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        console.log('Network response was not ok');
     }
 
     const responseData: TResponseFields<T> = await response.json();
@@ -144,7 +144,7 @@ export async function getProducts(ids: string[]): Promise<TResponseItems> {
 
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        console.log('Network response was not ok');
     }
 
     const responseData: TResponseItems = await response.json();

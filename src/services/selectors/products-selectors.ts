@@ -48,3 +48,7 @@ export function productsIsLoadingSelector(state: RootState) {
 export function productsIsFilteredSelector(state: RootState) {
     return state.productsData.isFiltered
 }
+
+export function productsFilterNameSelector(state: RootState) {
+    return state.productsData.filterName
+}
