@@ -1,8 +1,10 @@
 import { PreloadedState, combineReducers, configureStore } from "@reduxjs/toolkit";
 import { productsReducer } from "./reducers/products-reducer";
+import { filterButtonsReducer } from "./reducers/filter-buttons-reducer";
 
 const rootReducer = combineReducers({
-    productsData: productsReducer
+    productsData: productsReducer,
+    buttonsData: filterButtonsReducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

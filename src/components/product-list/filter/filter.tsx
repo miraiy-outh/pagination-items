@@ -3,32 +3,32 @@ import { PriceFilter } from './price-filter/price-filter'
 import { BrandFilter } from './brand-filter/brand-filter'
 import { NameFilter } from './name-filer/name-filter'
 import { FilterButton } from './filter-button/filter-button';
-import { useState } from 'react';
-
-type TButtonState = {
-    price: boolean;
-    brand: boolean;
-    name: boolean;
-}
-
-export type TButtonName = 'price' | 'brand' | 'name'
+import { useDispatch, useSelector } from '../../../hooks/redux-hooks';
+import { buttonsSelector, resetSelector } from '../../../services/selectors/filter-buttons-selectors';
+import { TButtonName } from '../../../services/reducers/filter-buttons-reducer';
+import { BUTTON_CHANGE, RESET_CHANGE } from '../../../services/constants/filter-buttons-constants';
+import { PRODUCTS_FILTERING_CHANGE } from '../../../services/constants/products-constants';
 
 export function Filter() {
-    const [buttonsState, setButtonsState] = useState<TButtonState>({
-        price: false,
-        brand: false,
-        name: false
-    });
+    const buttonsState = useSelector(buttonsSelector);
+    const dispatch = useDispatch();
 
     const handleButtonClick = (buttonName: TButtonName) => {
-        setButtonsState(prevState => ({
-            ...prevState,
-            [buttonName]: !prevState[buttonName]
-        }));
-        setIsReset(prevIsReset => !prevIsReset);
-    };
+        dispatch({
+            type: PRODUCTS_FILTERING_CHANGE
+        })
 
-    const [isReset, setIsReset] = useState(false);
+        dispatch({
+            type: BUTTON_CHANGE,
+            name: buttonName,
+
+        })
+
+        dispatch({
+            type: RESET_CHANGE
+
+        })
+    };
 
     return (
         <Card
@@ -55,9 +55,8 @@ export function Filter() {
                         <PriceFilter></PriceFilter>
                         <FilterButton
                             buttonName="price"
-                            isDisabled={buttonsState.brand || buttonsState.name}
+                            isDisabled={!buttonsState.price}
                             onClick={handleButtonClick}
-                            isReset={isReset}
                         />
                     </Box>
 
@@ -70,9 +69,8 @@ export function Filter() {
                         <BrandFilter></BrandFilter>
                         <FilterButton
                             buttonName="brand"
-                            isDisabled={buttonsState.price || buttonsState.name}
+                            isDisabled={!buttonsState.brand}
                             onClick={handleButtonClick}
-                            isReset={isReset}
                         />
                     </Box>
 
@@ -85,9 +83,8 @@ export function Filter() {
                         <NameFilter></NameFilter>
                         <FilterButton
                             buttonName="name"
-                            isDisabled={buttonsState.price || buttonsState.brand}
+                            isDisabled={!buttonsState.name}
                             onClick={handleButtonClick}
-                            isReset={isReset}
                         />
                     </Box>
                 </Box>

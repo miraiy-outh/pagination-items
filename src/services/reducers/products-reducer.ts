@@ -65,8 +65,7 @@ type TProductsLoadingChangeAction = {
 }
 
 type TProductsFilteringChangeAction = {
-    type: typeof PRODUCTS_FILTERING_CHANGE,
-    isFiltered: boolean
+    type: typeof PRODUCTS_FILTERING_CHANGE
 }
 
 type TProductsActions = TProductsInitAction | TProductsPriceChangeAction | TProductsBrandChangeAction | TProductsPriceFilterChangeAction | TProductsBrandFilterChangeAction | TProductsNameChangeAction | TProductsPageChangeAction | TProductsLoadingChangeAction | TProductsFilteringChangeAction
@@ -151,7 +150,7 @@ export function productsReducer(state = defaultState, action: TProductsActions):
 
         case PRODUCTS_FILTERING_CHANGE: {
             return {
-                ...state, isLoading: action.isFiltered
+                ...state, isFiltered: !state.isFiltered
             }
         }
 

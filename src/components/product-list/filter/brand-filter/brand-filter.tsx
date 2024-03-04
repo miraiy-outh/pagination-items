@@ -39,7 +39,10 @@ export function BrandFilter() {
                 >
                     {brands.map((brand) => {
                         return (
-                            <MenuItem value={`${brand}`}>{brand}</MenuItem>
+                            <MenuItem
+                                key={`${brand}`}
+                                value={`${brand}`}
+                            >{brand}</MenuItem>
                         )
                     })}
                 </Select>
