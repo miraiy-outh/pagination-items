@@ -1,11 +1,10 @@
 import { Box } from '@mui/material'
 import { Product } from './product/product'
 import { productsSelector } from '../../../services/selectors/products-selectors'
-import { useDispatch, useSelector } from '../../../hooks/redux-hooks'
+import { useSelector } from '../../../hooks/redux-hooks'
 
 export function Products() {
     const products = useSelector(productsSelector)
-    const dispatch = useDispatch()
 
     return (
         <Box

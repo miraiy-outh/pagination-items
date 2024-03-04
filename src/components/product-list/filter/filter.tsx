@@ -4,7 +4,7 @@ import { BrandFilter } from './brand-filter/brand-filter'
 import { NameFilter } from './name-filer/name-filter'
 import { FilterButton } from './filter-button/filter-button';
 import { useDispatch, useSelector } from '../../../hooks/redux-hooks';
-import { buttonsSelector, resetSelector } from '../../../services/selectors/filter-buttons-selectors';
+import { buttonsSelector} from '../../../services/selectors/filter-buttons-selectors';
 import { TButtonName } from '../../../services/reducers/filter-buttons-reducer';
 import { BUTTON_CHANGE, RESET_CHANGE } from '../../../services/constants/filter-buttons-constants';
 import { PRODUCTS_FILTERING_CHANGE, PRODUCTS_FILTER_NAME_CHANGE } from '../../../services/constants/products-constants';

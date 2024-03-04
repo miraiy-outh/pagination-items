@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from '@mui/material'
+import { Card, CardContent, Typography } from '@mui/material'
 import { TProduct } from '../../../../services/reducers/products-reducer'
 
 export function Product(props: TProduct) {
