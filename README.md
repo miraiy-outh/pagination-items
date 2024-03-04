@@ -21,4 +21,4 @@ npm install
 ```bash
 npm run dev
 ```
-![Превью](public\preview.png)
+![Превью](public/preview.png)
