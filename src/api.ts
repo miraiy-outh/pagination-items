@@ -18,7 +18,7 @@ const formattedDate = `${year}${newMonth}${newDay}`;
 
 const key = md5(`${password}_${formattedDate}`);
 
-const url = 'http://api.valantis.store:40000/';
+const url = 'https://api.valantis.store:41000/';
 
 function getReguestOptions(data: TRequestData) {
     return {
